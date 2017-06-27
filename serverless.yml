@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) CloudZero, Inc. All rights reserved.
+# Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
+service: death-by-lambda
+
+provider:
+  name: aws
+  runtime: python3.6
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - "*"  # I ain't got time to figure out permissions! Seriously, what could go wrong?
+    Resource: "*"
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello/world
+          method: get
+          integration: lambda
+          parameters:
+              querystrings:
+                stuff: false
+          response:
+            headers:
+              Content-Type: "'text/html'"
+            template: $input.path('$')
